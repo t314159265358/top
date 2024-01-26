@@ -3,7 +3,6 @@ node_modules/
 vendor/
 
 # Ignore build files
-dist/
 build/
 *.min.js
 *.min.css
