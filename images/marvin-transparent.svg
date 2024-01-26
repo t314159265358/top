@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="head" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1097.97 1025.39">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        stroke-miterlimit: 15.12;
+        stroke-width: 20px;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4 {
+        stroke: #000;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke-linecap: round;
+        stroke-width: 18px;
+      }
+
+      .cls-2, .cls-3, .cls-4 {
+        stroke-miterlimit: 15.12;
+      }
+
+      .cls-3 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-3, .cls-4 {
+        stroke-width: 14.31px;
+      }
+
+      .cls-4 {
+        fill: url(#linear-gradient-2);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="235.4" y1="792.04" x2="303.59" y2="824.13" gradientTransform="translate(-192.24 3820.24) rotate(-9.88) scale(3.78 -3.78)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#31b125"/>
+      <stop offset="1" stop-color="#3cd32e"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="376.69" y1="792.03" x2="444.87" y2="824.13" gradientTransform="translate(2897.55 3282.8) rotate(170.12) scale(3.78)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#31b125"/>
+      <stop offset="1" stop-color="#3cd32e"/>
+    </linearGradient>
+  </defs>
+  <ellipse id="shape" class="cls-1" cx="548.99" cy="512.7" rx="540" ry="501.43" transform="translate(-79.79 101.75) rotate(-9.87)"/>
+  <g id="eye">
+    <path id="eye-left" class="cls-3" d="M160.79,630.23l120.08,106.37,118.29-176.86"/>
+    <path id="eye-right" class="cls-4" d="M961.22,491.32l-77.08,140.69-171.1-126.48"/>
+  </g>
+  <path id="curve" class="cls-2" d="M87.42,659.4c129.69-54.04,292.06-100.82,470.86-131.94,171.95-29.93,334.47-41.1,471.47-35.66"/>
+</svg>
