@@ -71,14 +71,17 @@
                     </svg>
                 </div>
                 <div class="lock">
-                    <svg id="lock" data-name="Lock" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 253.58 252.5">
-                        <g id="b" data-name="T">
-                            <path id="c" data-name="path35"
-                                d="M126.81,252.5L162.28,52.98c33.82,0,44.48,3.71,46.02,18.84,0,0,22.68-8.46,34.13-25.64-44.65-20.69-89.51-21.62-89.51-21.62l-26.18,31.88h.06s-26.18-31.89-26.18-31.89c0,0-44.86,.93-89.5,21.62,11.43,17.18,34.12,25.64,34.12,25.64,1.55-15.14,12.2-18.84,45.79-18.87l35.76,199.55" />
-                            <path id="d" data-name="path37"
-                                d="M126.79,15.36c36.09-.28,77.4,5.58,119.69,24.01,5.65-10.17,7.11-14.67,7.11-14.67C207.36,6.42,164.07,.16,126.79,0,89.51,.16,46.22,6.42,0,24.71c0,0,2.06,5.54,7.1,14.67C49.38,20.94,90.7,15.08,126.79,15.36h0" />
-                        </g>
-                    </svg>
+                    <div class="lock-ring"><span class="arch"></span></div>
+                    <div class="lock-body">
+                        <svg id="lock" data-name="Lock" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 253.58 252.5">
+                            <g id="b" data-name="T">
+                                <path id="c" data-name="path35"
+                                    d="M126.81,252.5L162.28,52.98c33.82,0,44.48,3.71,46.02,18.84,0,0,22.68-8.46,34.13-25.64-44.65-20.69-89.51-21.62-89.51-21.62l-26.18,31.88h.06s-26.18-31.89-26.18-31.89c0,0-44.86,.93-89.5,21.62,11.43,17.18,34.12,25.64,34.12,25.64,1.55-15.14,12.2-18.84,45.79-18.87l35.76,199.55" />
+                                <path id="d" data-name="path37"
+                                    d="M126.79,15.36c36.09-.28,77.4,5.58,119.69,24.01,5.65-10.17,7.11-14.67,7.11-14.67C207.36,6.42,164.07,.16,126.79,0,89.51,.16,46.22,6.42,0,24.71c0,0,2.06,5.54,7.1,14.67C49.38,20.94,90.7,15.08,126.79,15.36h0" />
+                            </g>
+                        </svg>
+                    </div>
                 </div>
                 <div class="sound">
                     <svg id="sound-right" data-name="Sound" xmlns="http://www.w3.org/2000/svg"
@@ -89,17 +92,20 @@
                 </div>
             </div>
 
-            <div class="player">
-                <wave-audio-path-player src="sounds/特剪 - 下载锁车音效，认准特派锁铃.wav" wave-width="320" wave-height="48"
-                    wave-color="rgba(128,128,128,.2)" wave-progress-color="rgba(128,128,128,.4)"
-                    id="hero-player"></wave-audio-path-player>
+            <h3 class="domain" data-text="LockChime.VIP" data-wav="LockChime.WAV" data-vip="LockChime.VIP"></h3>
 
-                <h3><span>LockChime.VIP</span></h3>
+            <div class="player">
+                <div class="waveform">
+
+                </div>
             </div>
 
             <div class="intro">
+
                 <h2>自定义你的特斯拉锁车提示音</h2>
                 <h3>最热 最新 最全的特斯拉锁车音效免费下载</h3>
+
+
             </div>
         </div>
     </section>
@@ -214,10 +220,15 @@
                     </div>
 
                     <div class="player">
-                        <audio controls title="LockChime.wav">
-                            <source src="">
-                            </source>
-                        </audio>
+                        <div class="size">
+
+                        </div>
+                        <div class="time">
+                            <span class="current-time"></span> / <span class="total-time"></span>
+                        </div>
+                        <div class="actions">
+                            <button type="button" class="icon-button download-button"><i></i></button>
+                        </div>
                     </div>
                 </div>
             </template>
@@ -226,7 +237,7 @@
 
     <footer>
         <div class="container">
-            <p>特派 x 锁铃</p>
+            <p>特派 𝕏 锁铃</p>
             <p><small>所有特斯拉锁车音效的版权归原创者所有，特派只负责特斯拉锁车提示音的收集整理、剪辑、压缩和分享，以及网站的建设和维护。</small></p>
             <p><small>
                     <a href="https://lockchime.vip">特斯拉锁车音效</a> |

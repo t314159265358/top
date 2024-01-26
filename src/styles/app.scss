@@ -88,9 +88,10 @@ code {
 
 body {
     font-family: Roboto, sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
     padding: 0;
     margin: 0;
-    font-size: 1rem;
     color: var(--text-color);
 }
 
@@ -236,6 +237,8 @@ footer {
     }
 
     .title {
+        margin-bottom: 1rem;
+        cursor: pointer;
 
         svg {
             width: 20rem;
@@ -247,6 +250,7 @@ footer {
         display: flex;
         align-items: center;
         gap: 4rem;
+        cursor: pointer;
 
         .sound {
             svg {
@@ -261,18 +265,12 @@ footer {
 
         .lock {
             display: inline-flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 2rem 2rem 2rem;
-            border-radius: 1rem;
-            background: var(--text-color);
-            position: relative;
-            width: 10rem;
-            height: 8rem;
-            margin-top: 6rem;
 
             &:before {
-                content: '';
+                // content: '';
                 display: block;
                 width: 8rem;
                 height: 8rem;
@@ -282,6 +280,56 @@ footer {
                 left: 1rem;
                 top: -6rem;
                 border-radius: 4rem 4rem 0 0;
+            }
+
+            .lock-ring {
+                width: 8rem;
+                height: 7rem;
+                position: relative;
+
+                .arch {
+                    display: inline-block;
+                    width: 8rem;
+                    height: 4rem;
+                    border: 1rem solid var(--text-color);
+                    border-bottom: 0;
+                    border-radius: 4rem 4rem 0 0;
+                }
+
+                &:before,
+                &:after {
+                    content: '';
+                    display: block;
+                    width: 1rem;
+                    height: 3rem;
+                    background: var(--text-color);
+                    position: absolute;
+                    top: 4rem;
+                }
+
+                &::before {
+                    left: 0;
+                    border-radius: 0;
+                }
+
+                &:after {
+                    right: 0;
+                    height: 1rem;
+                    border-radius: 0 0 1rem 1rem;
+                }
+            }
+
+            .lock-body {
+                display: inline-flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem 2rem 2rem;
+                border-radius: 1rem;
+                background: var(--text-color);
+                position: relative;
+                width: 10rem;
+                height: 8rem;
             }
 
             svg {
@@ -299,73 +347,58 @@ footer {
         align-items: center;
         text-align: center;
         gap: .5rem;
+        line-height: 1.5;
 
         h2,
         h3,
         h4 {
             margin: 0;
         }
+
+    }
+
+    .domain {
+        margin-top: -1rem;
+        cursor: pointer;
+
+        &:before {
+            content: attr(data-text);
+            color: var(--text-color);
+            background: var(--body-color);
+        }
     }
 
     .player {
-        width: 25rem;
-        height: 3rem;
         display: flex;
         align-items: center;
         justify-content: center;
         position: relative;
+        cursor: pointer;
 
-        wave-audio-path-player {
-            display: block;
-            width: 100%;
-
-            &::part(player) {
-                position: relative;
-            }
-
-            &::part(play) {
-                background: none;
-                width: 100%;
-                height: 100%;
-                position: absolute;
-                z-index: 2;
-            }
-
-            &::part(button) {
-                opacity: 0;
-            }
-
-            &::part(currenttime),
-            &::part(duration) {
-                display: none;
-            }
-
-            &::part(input) {
-                display: none;
-            }
-
-            &::part(svg) {
-                width: 25rem;
-            }
-
-            &::part(path1) {
-                fill: red;
-                color: red;
-            }
+        .waveform {
+            width: 420px;
         }
 
-        h3 {
+        &:after {
+            // content: '';
             position: absolute;
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 2;
+        }
+    }
+}
 
-            span {
-                color: var(--text-color);
-                background: var(--body-color);
+.hero.is-playing {
+    .lock {
+        .lock-ring {
+            transform: translateY(1rem);
+
+            &:after {
+                height: 3rem;
+                border-radius: 0;
             }
         }
     }
@@ -773,6 +806,53 @@ main {
             width: 100%;
         }
 
+        .player {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+            padding: 0 0 0 1rem;
+            font-size: 14px;
+            color: rgba(128, 128, 128, 1);
+
+            .size {
+                width: 3rem;
+            }
+
+            .time {
+                flex: 1;
+                text-align: center;
+            }
+
+            .download-button {
+                --color: rgba(128, 128, 128, 1);
+
+                i {
+                    &:before {
+                        content: '';
+                        display: block;
+                        width: 8px;
+                        height: 8px;
+                        background: var(--color);
+                        margin-left: 4px;
+                    }
+
+                    &:after {
+                        content: '';
+                        display: block;
+                        width: 0;
+                        height: 0;
+                        border: 8px solid transparent;
+                        border-top-color: var(--color);
+                        border-bottom-width: 2px;
+                        box-shadow: 0 2px 0 0 var(--color);
+                    }
+
+                }
+            }
+        }
+
         audio {
             max-width: 100%;
         }
@@ -858,6 +938,20 @@ main {
 
             audio {
                 max-width: var(--audio-max-width, 20rem);
+            }
+        }
+
+        .player {
+            .time {
+                order: 1;
+            }
+
+            .size {
+                order: 2;
+            }
+
+            .actions {
+                order: 3;
             }
         }
     }

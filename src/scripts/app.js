@@ -1,8 +1,21 @@
 import sounds from '../../data/sounds.json';
 
-import 'wave-audio-path-player'
+import WaveSurfer from 'wavesurfer.js'
 
 import Cookies from 'js-cookie'
+
+
+String.prototype.toDuration = function () {
+    var sec_num = parseInt(this, 10); // don't forget the second param
+    var hours = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours < 10) { hours = "0" + hours; }
+    if (minutes < 10) { minutes = "0" + minutes; }
+    if (seconds < 10) { seconds = "0" + seconds; }
+    return minutes + ':' + seconds;
+}
 
 /**
  * Color Scheme
@@ -51,108 +64,158 @@ import Cookies from 'js-cookie'
 }
 
 /**
- * Only Play One Audio at same time.
+ * Make domain as a filename type toggle
  */
 {
+    function setType(type) {
+        typeToggle.dataset.text = typeToggle.dataset[type];
+    }
+
+    let typeToggle = document.querySelector('.domain');
+
+    let currentType = Cookies.get('filename_type') || 'vip';
+
+    setType(currentType);
+
+    typeToggle.addEventListener('click', (e) => {
+        let wavText = typeToggle.getAttribute('data-wav');
+        let text = typeToggle.getAttribute('data-text');
+
+        let toType = text == wavText ? 'vip' : 'wav';
+
+        setType(toType)
+
+        Cookies.set('filename_type', toType)
+    })
+}
+
+function geteFileNameByPath(file, ext = 'wav') {
+    return file.split('\\').pop().split('/').pop().replace('.' + ext, '')
+}
+
+/**
+ * Audio
+ */
+function downloadAudio(file, name = '') {
+    var a = document.createElement('a');
+    // var url = window.URL.createObjectURL(blob);
+
+    if (!name)
+        name = geteFileNameByPath(file)
+
+    a.href = file;
+    let filenameType = Cookies.get('filename_type') || 'vip';
+    if (filenameType == 'vip') {
+        a.download = '(特派𝕏锁铃) ' + name + ' [LockChime.VIP]' + '.wav';
+    } else {
+        a.download = 'LockChime.wav';
+    }
+
+    a.click();
+    // window.URL.revokeObjectURL(url);
+}
+
+{
+    let currentAudio = null;
+
     sounds.forEach(sound => {
-        let template = document.querySelector('#sound-item');
-        let clone = template.content.cloneNode(true);
+        const template = document.querySelector('#sound-item');
+        const clone = template.content.cloneNode(true);
+        const item = clone.querySelector('.sound-item');
+        const player = item.querySelector('.player');
+        const wavFilePath = 'sounds/' + sound.name + '.wav';
 
-        clone.querySelector('.name').innerHTML = sound.name;
+        // Set name
+        item.querySelector('.name').innerHTML = sound.name;
+        item.querySelector('.size').innerHTML = sound.size + 'KB';
 
-        clone.querySelector('audio source').src = 'sounds/' + sound.name + '.wav';
+        let date = new Date(0);
+        date.setSeconds(sound.duration)
+        let duration = date.toISOString().substring(14, 19);
+        item.querySelector('.total-time').innerHTML = duration;
+        item.querySelector('.current-time').innerHTML = '00:00';
 
+        // Set cover
         let cover = null;
         if ('cover' in sound) {
             cover = sound.cover;
         } else {
             cover = 'default';
         }
-        let img = clone.querySelector('img')
+        let img = item.querySelector('img')
         img.src = 'sounds/' + cover + '.webp';
         img.alt = sound.name
 
+        function createAudio() {
+            let audio = document.createElement('audio');
+
+            audio.src = wavFilePath;
+            // audio.controls = true;
+
+            audio.onplaying = function () {
+                item.dataset.status = 'playing'
+            }
+
+            audio.onpause = function () {
+                item.dataset.status = 'paused'
+            }
+
+            audio.onended = function () {
+                item.dataset.status = 'ended'
+            }
+
+            audio.addEventListener('play', function () {
+                if (currentAudio == audio) {
+                    return;
+                }
+
+                if (currentAudio) {
+                    currentAudio.pause();
+                    currentAudio.currentTime = 0;
+                }
+
+                currentAudio = audio;
+            }, 1000);
+
+            // Circular Timeline
+            let seekCircle = item.querySelector('.seek'),
+                totalLength = seekCircle.getTotalLength();
+
+            seekCircle.setAttribute('stroke-dasharray', totalLength)
+            seekCircle.setAttribute('stroke-dashoffset', totalLength)
+
+            audio.addEventListener('timeupdate', () => {
+                console.log('timeupdate', audio.currentTime)
+                let currentTime = audio.currentTime;
+
+                let maxduration = audio.duration;
+                let progress = totalLength - (currentTime / maxduration * totalLength);
+
+                seekCircle.setAttribute('stroke-dashoffset', progress);
+            });
+
+            // append to container
+            player.appendChild(audio);
+
+            return audio;
+        }
+
+        item.querySelector('.cover').addEventListener('click', (e) => {
+            console.log('click cover')
+
+            const audio = item.querySelector('audio') || createAudio();
+            console.log(audio);
+
+            item.dataset.status == 'playing' ? audio.pause() : audio.play();
+        })
+
+        item.querySelector('.download-button').addEventListener('click', (e) => {
+            downloadAudio(wavFilePath, sound.name);
+        })
 
         document.querySelector('.sound-loop').appendChild(clone)
     })
-
-    let currentAudio = null;
-
-    function stopCurrentAudio() {
-        if (currentAudio) {
-            currentAudio.pause();
-            currentAudio.currentTime = 0;
-        }
-    }
-
-    function playAudio(audio) {
-        audio.play();
-        currentAudio = audio;
-    }
-
-
-    document.querySelectorAll('audio').forEach((audio) => {
-        audio.addEventListener('play', function () {
-            if (currentAudio == audio) {
-                return;
-            }
-
-            stopCurrentAudio();
-
-            playAudio(audio);
-        }, 1000);
-
-        let isPlaying = false;
-
-        audio.onplaying = function () {
-            isPlaying = true;
-
-            audio.closest('.sound-item').dataset.status = 'playing'
-        };
-        audio.onpause = function () {
-            isPlaying = false;
-
-            audio.closest('.sound-item').dataset.status = 'paused'
-        };
-
-        audio.onended = function () {
-            isPlaying = false;
-
-            audio.closest('.sound-item').dataset.status = 'ended'
-        }
-
-        audio.closest('.sound-item').querySelector('.cover').addEventListener('click', (e) => {
-            console.log('audio')
-
-            isPlaying ? audio.pause() : audio.play();
-        })
-
-        let item = audio.closest('.sound-item');
-
-        let seekCircle = item.querySelector('.seek'),
-            totalLength = seekCircle.getTotalLength();
-
-        seekCircle.setAttribute('stroke-dasharray', totalLength)
-        seekCircle.setAttribute('stroke-dashoffset', totalLength)
-
-        audio.addEventListener('timeupdate', () => {
-
-            let currentTime = audio.currentTime;
-            if (!currentTime)
-                return;
-
-            let maxduration = audio.duration;
-            let progress = totalLength - (currentTime / maxduration * totalLength);
-
-            console.log(audio.duration);
-
-            seekCircle.setAttribute('stroke-dashoffset', progress);
-        });
-    });
-
 }
-
-
 
 /**
  * Tags Toggle
@@ -232,9 +295,6 @@ import Cookies from 'js-cookie'
         searchForm.requestSubmit()
     });
 }
-
-
-
 
 
 /**
@@ -329,3 +389,49 @@ document.addEventListener('keydown', event => {
         event.preventDefault();
     }
 });
+
+let heroAudioURL = 'sounds/特剪 - 下载锁车音效，认准特派锁铃.wav';
+
+let wavesurfer = WaveSurfer.create({
+    container: '.waveform',
+    waveColor: '#E31937',
+    progressColor: '#24d42d',
+    barWidth: 4,
+    barGap: 3,
+    barRadius: 2,
+    height: 42,
+    cursorWidth: 0,
+    url: heroAudioURL,
+})
+
+wavesurfer.on('click', () => {
+    wavesurfer.setTime(0)
+    wavesurfer.play()
+})
+
+wavesurfer.on('play', () => {
+    document.querySelector('.hero').classList.add('is-playing');
+
+    document.querySelector('.hero .intro h2').innerText = geteFileNameByPath(heroAudioURL)
+})
+wavesurfer.on('finish', () => {
+    document.querySelector('.hero').classList.remove('is-playing');
+})
+
+document.querySelector('.hero .banner').addEventListener('click', () => {
+    let random = Math.floor(Math.random() * sounds.length - 1);
+    let sound = sounds[random]
+
+    heroAudioURL = 'sounds/' + sound.name + '.wav'
+
+    wavesurfer.load(heroAudioURL).then(() => {
+        wavesurfer.play()
+    })
+})
+
+document.querySelector('.hero .title').addEventListener('click', () => {
+    heroAudioURL = 'sounds/特剪 - 下载锁车音效，认准特派锁铃.wav';
+    wavesurfer.load(heroAudioURL).then(() => {
+        wavesurfer.play()
+    })
+})

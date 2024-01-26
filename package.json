@@ -13,7 +13,9 @@
     "webpack-obfuscator": "^3.5.1"
   },
   "dependencies": {
+    "get-audio-duration": "^4.0.1",
     "js-cookie": "^3.0.5",
-    "wave-audio-path-player": "^0.0.1"
+    "wave-audio-path-player": "^0.0.1",
+    "wavesurfer.js": "^7.7.1"
   }
 }
