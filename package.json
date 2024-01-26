@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "build-data": "node src/scripts/generate-data.js"
+    "build-data": "node src/scripts/generate-data.js",
+    "push": "npx mix --production && git add . && git commit -m 'dev' && git push origin master"
   },
   "devDependencies": {
     "javascript-obfuscator": "^4.1.0",
