@@ -435,3 +435,7 @@ document.querySelector('.hero .title').addEventListener('click', () => {
         wavesurfer.play()
     })
 })
+
+document.querySelector('.hero .intro').addEventListener('click', () => {
+    downloadAudio(heroAudioURL)
+})
