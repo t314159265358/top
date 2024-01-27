@@ -239,23 +239,21 @@ footer {
     .title {
         margin-bottom: 1rem;
         cursor: pointer;
-
-        svg {
-            width: 20rem;
-            fill: var(--text-color)
-        }
+        font-size: 3rem;
     }
 
     .banner {
+        --lock-size: 8rem;
+
         display: flex;
         align-items: center;
-        gap: 4rem;
+        gap: calc(var(--lock-size) / 2);
         cursor: pointer;
 
         .sound {
             svg {
                 fill: var(--text-color);
-                width: 5rem;
+                width: calc(var(--lock-size) / 8 * 5);
             }
 
             &:first-child {
@@ -264,47 +262,36 @@ footer {
         }
 
         .lock {
+
             display: inline-flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
 
-            &:before {
-                // content: '';
-                display: block;
-                width: 8rem;
-                height: 8rem;
-                border: 1rem solid var(--text-color);
-                border-bottom: 0;
-                position: absolute;
-                left: 1rem;
-                top: -6rem;
-                border-radius: 4rem 4rem 0 0;
-            }
-
             .lock-ring {
-                width: 8rem;
-                height: 7rem;
+                width: var(--lock-size);
+                height: calc(var(--lock-size) / 8 * 7);
                 position: relative;
+                transform: translateY(0);
 
                 .arch {
                     display: inline-block;
-                    width: 8rem;
-                    height: 4rem;
-                    border: 1rem solid var(--text-color);
+                    width: var(--lock-size);
+                    height: calc(var(--lock-size) / 2);
+                    border: calc(var(--lock-size) / 8) solid var(--text-color);
                     border-bottom: 0;
-                    border-radius: 4rem 4rem 0 0;
+                    border-radius: calc(var(--lock-size) / 2) calc(var(--lock-size) / 2) 0 0;
                 }
 
                 &:before,
                 &:after {
                     content: '';
                     display: block;
-                    width: 1rem;
-                    height: 3rem;
+                    width: calc(var(--lock-size) / 8);
+                    height: calc(var(--lock-size) / 8 * 3);
                     background: var(--text-color);
                     position: absolute;
-                    top: 4rem;
+                    top: calc(var(--lock-size) / 2);
                 }
 
                 &::before {
@@ -314,8 +301,8 @@ footer {
 
                 &:after {
                     right: 0;
-                    height: 1rem;
-                    border-radius: 0 0 1rem 1rem;
+                    height: calc(var(--lock-size) / 8);
+                    border-radius: 0 0 calc(var(--lock-size) / 8) calc(var(--lock-size) / 8);
                 }
             }
 
@@ -324,17 +311,17 @@ footer {
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                padding: 2rem 2rem 2rem;
+                padding: calc(var(--lock-size) / 4);
                 border-radius: 1rem;
                 background: var(--text-color);
                 position: relative;
-                width: 10rem;
-                height: 8rem;
+                width: calc(var(--lock-size) / 8 * 10);
+                height: var(--lock-size);
             }
 
             svg {
                 fill: var(--body-color);
-                width: 4rem;
+                width: calc(var(--lock-size) / 8 * 4);
             }
         }
 
@@ -349,11 +336,16 @@ footer {
         gap: .5rem;
         line-height: 1.5;
         cursor: pointer;
+        letter-spacing: 1px;
 
         h2,
         h3,
         h4 {
             margin: 0;
+        }
+
+        h3 {
+            font-weight: 500;
         }
 
     }
@@ -1085,54 +1077,6 @@ main {
     }
 }
 
-@media (max-width:40rem) {
-    #header {
-        padding: 1rem 1rem;
-        grid-template-columns: auto 1fr auto;
-
-        .brand {
-            justify-content: flex-start;
-        }
-    }
-
-    :root {
-        --navbar-logo-height: 1.5rem;
-    }
-
-    .sound-loop[data-layout="list"] {
-        .sound-item {
-            display: block;
-            padding-left: 6rem;
-
-            .cover {
-                float: left;
-                margin-left: -5rem;
-                margin-top: .5rem;
-            }
-
-            .name {
-                width: auto;
-            }
-
-            audio {
-                max-width: 100%;
-                margin-left: -4px;
-
-                &::-webkit-media-controls-panel {
-                    padding: 0;
-                    padding-block-start: 0;
-                    padding-inline-start: 0;
-                    -webkit-padding-start: 0;
-                }
-
-                &::-webkit-media-controls-play-button {
-                    display: none;
-                }
-            }
-        }
-    }
-}
-
 .about-container {
     position: fixed;
     z-index: 100;
@@ -1205,5 +1149,49 @@ main {
         justify-content: center;
         align-items: center;
         gap: 4rem;
+    }
+}
+
+@media (max-width:40rem) {
+    :root {
+        --navbar-logo-height: 1.5rem;
+    }
+
+    #header {
+        padding: 1rem 1rem;
+        grid-template-columns: auto 1fr auto;
+
+        .brand {
+            justify-content: flex-start;
+        }
+    }
+
+    .hero .banner {
+        --lock-size: 6rem;
+    }
+
+    .sound-loop[data-layout="list"] {
+        .sound-item {
+            display: block;
+            padding-left: 6rem;
+
+            .cover {
+                float: left;
+                margin-left: -5rem;
+                margin-top: .5rem;
+            }
+
+            .name {
+                width: auto;
+            }
+
+            .player {
+                padding: 0;
+
+                .time {
+                    text-align: left;
+                }
+            }
+        }
     }
 }

@@ -57,6 +57,50 @@ fs.readdir(soundsFilePath, function (err, files) {
         item.atime = stat.atime
         // console.log(item)
 
+
+        let tags = item.tags ?? '';
+        tags = tags.split(', ');
+
+        // tags
+        if (item.name.match(/[\u3400-\u9FBF]/)) {
+            if (!tags.includes('Chinese')) {
+                tags.push('Chinese');
+            }
+        }
+
+        const tagsRule = [
+            {
+                'name': 'Mario',
+                'tags': ['Game'],
+            },
+            {
+                'name': 'Star Wars',
+                'tags': ['Movie'],
+            },
+            {
+                'name': 'Jarvis',
+                'tags': ['Movie'],
+            },
+            {
+                'name': 'Doraemon',
+                'tags': ['Cartoon'],
+            }
+        ];
+
+        tagsRule.forEach(rule => {
+            if (item.name.includes(rule.name)) {
+                rule.tags.forEach((tag) => {
+                    if (!tags.includes(tag)) {
+                        tags.push(tag)
+                    }
+                })
+            }
+        })
+
+        item.tags = tags.join(', ');
+
+        console.log(item);
+
         newItems.push(item)
     }
 
@@ -70,11 +114,11 @@ fs.readdir(soundsFilePath, function (err, files) {
         // console.log(newItems);
 
         let string = JSON.stringify(newItems);
-        string = CryptoJS.AES.encrypt(string, '不要恐慌');
+        // string = CryptoJS.AES.encrypt(string, '不要恐慌');
 
-        console.log(string);
+        // console.log(string);
 
-        // fs.writeFileSync(dataFilePath, , 'utf8');
+        fs.writeFileSync(dataFilePath, string, 'utf8');
     })
 
 

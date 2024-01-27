@@ -4,6 +4,8 @@ import WaveSurfer from 'wavesurfer.js'
 
 import Cookies from 'js-cookie'
 
+console.log(sounds);
+
 
 String.prototype.toDuration = function () {
     var sec_num = parseInt(this, 10); // don't forget the second param
@@ -67,30 +69,36 @@ String.prototype.toDuration = function () {
  * Make domain as a filename type toggle
  */
 {
-    function setType(type) {
-        typeToggle.dataset.text = typeToggle.dataset[type];
+    function makeDomainAsFileNameToggle() {
+        const typeToggle = document.querySelector('.domain');
+        const currentType = Cookies.get('filename_type') || 'vip';
+
+        function setType(type) {
+            typeToggle.dataset.text = typeToggle.dataset[type];
+        }
+
+        setType(currentType);
+
+        typeToggle.addEventListener('click', (e) => {
+            let wavText = typeToggle.getAttribute('data-wav');
+            let text = typeToggle.getAttribute('data-text');
+
+            let toType = text == wavText ? 'vip' : 'wav';
+
+            setType(toType)
+
+            Cookies.set('filename_type', toType)
+        })
     }
 
-    let typeToggle = document.querySelector('.domain');
-
-    let currentType = Cookies.get('filename_type') || 'vip';
-
-    setType(currentType);
-
-    typeToggle.addEventListener('click', (e) => {
-        let wavText = typeToggle.getAttribute('data-wav');
-        let text = typeToggle.getAttribute('data-text');
-
-        let toType = text == wavText ? 'vip' : 'wav';
-
-        setType(toType)
-
-        Cookies.set('filename_type', toType)
-    })
 }
 
 function geteFileNameByPath(file, ext = 'wav') {
     return file.split('\\').pop().split('/').pop().replace('.' + ext, '')
+}
+
+function getAudioPath(name) {
+    return 'sounds/' + name + '.wav';
 }
 
 /**
@@ -185,7 +193,7 @@ function downloadAudio(file, name = '') {
             seekCircle.setAttribute('stroke-dashoffset', totalLength)
 
             audio.addEventListener('timeupdate', () => {
-                console.log('timeupdate', audio.currentTime)
+                // console.log('timeupdate', audio.currentTime)
                 let currentTime = audio.currentTime;
 
                 let maxduration = audio.duration;
@@ -390,7 +398,8 @@ document.addEventListener('keydown', event => {
     }
 });
 
-let heroAudioURL = 'sounds/下载锁车音效，认准特派锁铃.wav';
+const defaultHeroAudio = sounds.find((sound) => sound.name == 'Cymatics');
+let heroAudio = defaultHeroAudio;
 
 let wavesurfer = WaveSurfer.create({
     container: '.waveform',
@@ -401,7 +410,7 @@ let wavesurfer = WaveSurfer.create({
     barRadius: 2,
     height: 42,
     cursorWidth: 0,
-    url: heroAudioURL,
+    url: getAudioPath(heroAudio.name),
 })
 
 wavesurfer.on('click', () => {
@@ -412,30 +421,31 @@ wavesurfer.on('click', () => {
 wavesurfer.on('play', () => {
     document.querySelector('.hero').classList.add('is-playing');
 
-    document.querySelector('.hero .intro h2').innerText = geteFileNameByPath(heroAudioURL)
+    document.querySelector('.hero .intro h2').innerText = geteFileNameByPath(heroAudio.name)
 })
 wavesurfer.on('finish', () => {
     document.querySelector('.hero').classList.remove('is-playing');
 })
 
 document.querySelector('.hero .banner').addEventListener('click', () => {
-    let random = Math.floor(Math.random() * sounds.length - 1);
-    let sound = sounds[random]
+    const random = Math.floor(Math.random() * sounds.length - 1);
+    const sound = sounds[random]
 
-    heroAudioURL = 'sounds/' + sound.name + '.wav'
+    heroAudio = sound;
 
-    wavesurfer.load(heroAudioURL).then(() => {
+    wavesurfer.load(getAudioPath(sound.name)).then(() => {
         wavesurfer.play()
     })
 })
 
 document.querySelector('.hero .title').addEventListener('click', () => {
-    heroAudioURL = 'sounds/下载锁车音效，认准特派锁铃.wav';
-    wavesurfer.load(heroAudioURL).then(() => {
+    heroAudio = defaultHeroAudio;
+
+    wavesurfer.load(getAudioPath(heroAudio.name)).then(() => {
         wavesurfer.play()
     })
 })
 
 document.querySelector('.hero .intro').addEventListener('click', () => {
-    downloadAudio(heroAudioURL)
+    downloadAudio(getAudioPath(heroAudio.name))
 })
