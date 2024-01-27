@@ -4,7 +4,7 @@ import WaveSurfer from 'wavesurfer.js'
 
 import Cookies from 'js-cookie'
 
-console.log(sounds);
+// console.log(sounds);
 
 
 String.prototype.toDuration = function () {
@@ -50,7 +50,7 @@ String.prototype.toDuration = function () {
  */
 {
     const intersectionObserver = new IntersectionObserver((entries) => {
-        console.log(entries[0]);
+        // console.log(entries[0]);
 
         if (entries[0].isIntersecting) {
             document.querySelector("#header").classList.remove('stuck');
@@ -193,7 +193,7 @@ function downloadAudio(file, name = '') {
             seekCircle.setAttribute('stroke-dashoffset', totalLength)
 
             audio.addEventListener('timeupdate', () => {
-                // console.log('timeupdate', audio.currentTime)
+                // // console.log('timeupdate', audio.currentTime)
                 let currentTime = audio.currentTime;
 
                 let maxduration = audio.duration;
@@ -209,10 +209,10 @@ function downloadAudio(file, name = '') {
         }
 
         item.querySelector('.cover').addEventListener('click', (e) => {
-            console.log('click cover')
+            // console.log('click cover')
 
             const audio = item.querySelector('audio') || createAudio();
-            console.log(audio);
+            // console.log(audio);
 
             item.dataset.status == 'playing' ? audio.pause() : audio.play();
         })
