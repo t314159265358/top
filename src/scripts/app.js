@@ -114,7 +114,7 @@ function downloadAudio(file, name = '') {
     a.href = file;
     let filenameType = Cookies.get('filename_type') || 'vip';
     if (filenameType == 'vip') {
-        a.download = '(特派𝕏锁铃) ' + name + ' [LockChime.VIP]' + '.wav';
+        a.download = '[LockChime.VIP]' + name + '.wav';
     } else {
         a.download = 'LockChime.wav';
     }
