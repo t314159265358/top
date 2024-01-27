@@ -390,7 +390,7 @@ document.addEventListener('keydown', event => {
     }
 });
 
-let heroAudioURL = 'sounds/特剪 - 下载锁车音效，认准特派锁铃.wav';
+let heroAudioURL = 'sounds/下载锁车音效，认准特派锁铃.wav';
 
 let wavesurfer = WaveSurfer.create({
     container: '.waveform',
@@ -430,7 +430,7 @@ document.querySelector('.hero .banner').addEventListener('click', () => {
 })
 
 document.querySelector('.hero .title').addEventListener('click', () => {
-    heroAudioURL = 'sounds/特剪 - 下载锁车音效，认准特派锁铃.wav';
+    heroAudioURL = 'sounds/下载锁车音效，认准特派锁铃.wav';
     wavesurfer.load(heroAudioURL).then(() => {
         wavesurfer.play()
     })

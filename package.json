@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build-data": "node src/scripts/generate-data.js",
-    "push": "npx mix --production && git add . && git commit -m 'dev' && git push origin master"
+    "push": "npx mix --production && git add . && git commit -m 'dev' && git push origin master && echo 'Push Successful!'"
   },
   "devDependencies": {
     "javascript-obfuscator": "^4.1.0",
@@ -13,6 +13,7 @@
     "webpack-obfuscator": "^3.5.1"
   },
   "dependencies": {
+    "crypto-js": "^4.2.0",
     "get-audio-duration": "^4.0.1",
     "js-cookie": "^3.0.5",
     "wave-audio-path-player": "^0.0.1",

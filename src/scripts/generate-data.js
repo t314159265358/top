@@ -1,4 +1,6 @@
 
+const CryptoJS = require("crypto-js");
+
 const path = require('path');
 const fs = require('fs');
 
@@ -53,7 +55,7 @@ fs.readdir(soundsFilePath, function (err, files) {
         const stat = fs.statSync(wavFilePath)
         item.size = Math.round(stat.size / 1024)
         item.atime = stat.atime
-        console.log(item)
+        // console.log(item)
 
         newItems.push(item)
     }
@@ -65,9 +67,14 @@ fs.readdir(soundsFilePath, function (err, files) {
     }
 
     asyncForEach(wavFiles, pushItem).then(() => {
-        console.log(newItems);
+        // console.log(newItems);
 
-        fs.writeFileSync(dataFilePath, JSON.stringify(newItems), 'utf8');
+        let string = JSON.stringify(newItems);
+        string = CryptoJS.AES.encrypt(string, '不要恐慌');
+
+        console.log(string);
+
+        // fs.writeFileSync(dataFilePath, , 'utf8');
     })
 
 
